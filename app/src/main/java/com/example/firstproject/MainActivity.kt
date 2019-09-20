@@ -2,8 +2,6 @@ package com.example.firstproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.service.autofill.RegexValidator
-import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -12,6 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import kotlin.text.Regex
 
 class MainActivity : AppCompatActivity() {
+
+    val STATE_OUTPUT_VIEW = "OUTPUT_VIEW_KEY"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +55,26 @@ class MainActivity : AppCompatActivity() {
     fun showNumber(str: String) {
         val view = findViewById<TextView>(R.id.OutputView)
         view.text = str;
+    }
+
+    override fun onSaveInstanceState(saveInstanceState: Bundle) {
+        // получаем ссылку на текстовую метку
+        val myTextView =findViewById<TextView>(R.id.OutputView)
+
+        // Сохраняем его состояние
+        saveInstanceState.putString(STATE_OUTPUT_VIEW, myTextView.text.toString())
+
+        // всегда вызывайте суперкласс для сохранения состояний видов
+        super.onSaveInstanceState(saveInstanceState)
+    }
+
+    public override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState)
+
+        // Сохраняем его состояние
+        val savedNumber = savedInstanceState.getString(STATE_OUTPUT_VIEW)
+        this.showNumber(savedNumber!!)
     }
 
 
